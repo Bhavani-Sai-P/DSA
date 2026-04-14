@@ -11,10 +11,17 @@
 class Solution {
     TreeNode lca;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q) return root;
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        if (left != null && right != null) return root; // this is LCA
-        return (left != null) ? left : right;
+        traversal(root, p, q);
+        return lca;
     }
-}  
+    public int traversal(TreeNode curr, TreeNode p, TreeNode q) {
+        int count = 0;
+        if (curr == null) return 0;
+        int ansOnLeft = traversal(curr.left, p, q);
+        int ansOnRight = traversal(curr.right, p, q);
+        if (curr.val== p.val || curr.val == q.val) count++;
+        count = ansOnLeft + ansOnRight + count;
+        if (count == 2 && lca == null) lca = curr;
+        return count;
+    }
+}
